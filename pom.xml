@@ -141,21 +141,4 @@
    		</license>
 	</licenses>
 
-	<distributionManagement>
-		<repository>
-			<id>qiy-artifactory</id>
-			<name>qiy-artifactory-releases</name>
-			<url>http://artifactory.boxtel/artifactory/Qiy</url>
-		</repository>
-		<snapshotRepository>
-			<id>qiy-artifactory</id>
-			<name>qiy-artifactory-snapshots</name>
-			<url>http://artifactory.boxtel/artifactory/Qiy</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<scm>
-		<url>scm:svn:https://svn.qiy.nl:8443/svn/Dolden/OpenIdConnect/openidcp/trunk</url>
-		<developerConnection>scm:svn:https://svn.qiy.nl:8443/svn/Dolden/OpenIdConnect/openidcp/trunk</developerConnection>
-	</scm>
 </project>
