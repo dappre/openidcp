@@ -1,0 +1,23 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# passphrase = demo-effect
+keytool.exe -genkeypair -keyalg RSA -keysize 2048 -ext KU:c=digitalSignature -alias s1 -keystore demo.jks
+keytool.exe -genkeypair -keyalg RSA -keysize 2048 -ext KU:c=encipherOnly -alias e1 -keystore demo.jks
+keytool.exe -genkeypair -keyalg EC -keysize 256 -ext KU:c=encipherOnly -alias e2 -keystore demo.jks
+keytool.exe -genkeypair -keyalg EC -keysize 256 -ext KU:c=digitalSignature -alias s2 -keystore demo.jks
+
+# NB: nodetype jceks is needed to store a shared secret  
+# passphrase = qiy-demo
+keytool.exe -genseckey -alias nodesecret -keyalg AES -keysize 128 -storetype jceks -keystore node.jceks
+keytool.exe -genkeypair -alias nodekeypair -keyalg RSA -keysize 2048  -storetype jceks -keystore node.jceks
+  

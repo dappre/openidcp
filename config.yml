@@ -1,0 +1,109 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+qrConfig:
+  width: 180
+  height: 180
+
+nodeConfig:
+  id: 9dd4f8d6-89fb-488c-bff0-3955b98ac2e3
+  endpoint: http://localhost:8087/user/api
+  keystore: node.jceks
+  keystorePassPhrase: qiy-demo
+  keyPassPhrase: qiy-demo
+  
+clientConfig: 
+  - id: s6BhdRkqt3
+    uriRegex: https://client.example.org/cb
+  - id: rudy
+    uriRegex: https?://localhost:8095/.*
+  
+iss: https://digital-me.nl
+baseUri: http://localhost:8093/oidcp/
+registerCallbackUri: http://localhost:8087/user/connections/user/9dd4f8d6-89fb-488c-bff0-3955b98ac2e3/state?durationValid=PT45M&times=1
+dappreBaseURI: http://localhost:8091/card/
+
+sessionTimeoutInSeconds: 2700
+
+jedisConfiguration:
+# configure the number of connections to redis in a connection pool  
+  poolConfiguration: 
+    maxTotal: 8
+    maxIdle: 8
+    minIdle: 1
+# Configure the connections themselves    
+  host: localhost
+  port: 6379
+  timeout: 2000  
+  password:
+  database: 0
+  clientName: OIDCP
+  ssl: false  
+
+jwkConfigs:
+  idToken:
+    s1:
+      keystoreFilename: demo.jks
+      keyPassPhrase: demo-effect
+    e1:
+      keystoreFilename: demo.jks
+      keyPassPhrase: demo-effect
+    s2:
+      keystoreFilename: demo.jks
+      keyPassPhrase: demo-effect
+    e2:
+      keystoreFilename: demo.jks
+      keyPassPhrase: demo-effect
+
+logging:
+  level: INFO
+  loggers:
+    nl.qiy: INFO
+  appenders:
+    - type: console
+      logFormat: "%date{HH:mm:ss.SSS} dw-oidcp[app/%replace(%thread){' .*$', ''}]: %level{5} %logger{40}: %m%n%rEx"
+      timeZone: Europe/Amsterdam
+#    - type: file
+#      currentLogFilename: /var/log/idp/openidcp.log
+#      threshold: ALL
+#      archive: false
+#      archivedLogFilenamePattern: /var/log/idp/openidcp-%d.log
+#      archivedFileCount: 50
+#      logFormat: "%date{HH:mm:ss.SSS} dw-oidcp[app/%replace(%thread){' .*$', ''}]: %level{5} %logger{40}: %m%n%rEx"
+#      timeZone: Europe/Amsterdam
+
+server:
+  type: simple
+  applicationContextPath: /oidcp
+  adminContextPath: /oidcp/admin
+  registerDefaultExceptionMappers: false
+  connector:
+    type: http
+    port: 8093
+  requestLog:
+    appenders:
+      - type: console
+        logFormat: combined
+        timeZone: Europe/Amsterdam
+#      - type: file
+#        currentLogFilename: /var/log/idp/oidcp-http.log
+#        threshold: ALL
+#        archive: true
+#        archivedLogFilenamePattern: /var/log/idp/oidcp-http-%d.log
+#        archivedFileCount: 50
+#        logFormat: combined
+#        timeZone: Europe/Amsterdam
+
+jerseyClient:
+  timeout: 10s
+  connectionTimeout: 10s
+  connectionRequestTimeout: 10s
