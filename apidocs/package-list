@@ -1,0 +1,5 @@
+nl.qiy.demo.idp.dw
+nl.qiy.demo.idp.dw.cli
+nl.qiy.demo.idp.dw.health
+nl.qiy.demo.idp.dw.sp
+org.eclipse.jetty.nosql.jedis
