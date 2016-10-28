@@ -15,11 +15,9 @@ qrConfig:
   height: 180
 
 nodeConfig:
-  id: 9dd4f8d6-89fb-488c-bff0-3955b98ac2e3
+  id: 1e84423a-788e-4fbe-b1b9-1d23160253ba
   endpoint: http://localhost:8087/user/api
-  keystore: node.jceks
-  keystorePassPhrase: qiy-demo
-  keyPassPhrase: qiy-demo
+  secretsFilename: node-secrets.json
   
 clientConfig: 
   - id: s6BhdRkqt3
@@ -29,7 +27,7 @@ clientConfig:
   
 iss: https://digital-me.nl
 baseUri: http://localhost:8093/oidcp/
-registerCallbackUri: http://localhost:8087/user/connections/user/9dd4f8d6-89fb-488c-bff0-3955b98ac2e3/state?durationValid=PT45M&times=1
+registerCallbackUri: http://localhost:8087/user/connections/user/1e84423a-788e-4fbe-b1b9-1d23160253ba/state?durationValid=PT45M&times=1
 dappreBaseURI: http://localhost:8091/card/
 
 sessionTimeoutInSeconds: 2700

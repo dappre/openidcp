@@ -8,7 +8,7 @@
 	</prerequisites>
 	<groupId>nl.qiy.openid-connect</groupId>
 	<artifactId>openidcp</artifactId>
-	<version>0.0.12-SNAPSHOT</version>
+	<version>0.0.0</version>
 	<packaging>jar</packaging>
 	<name>OpenIdConnect-Qiy : Openid Connect Provider, using Qiy and Dappre</name>
 	<url>https://digital-me.github.io/openidcp</url>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>nl.qiy.openid-connect</groupId>
 			<artifactId>op-sdk-spi-impl</artifactId>
-			<version>0.0.12-SNAPSHOT</version>
+			<version>0.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>

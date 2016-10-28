@@ -71,7 +71,7 @@ public class ApiInfoCommand extends EnvironmentCommand<DemoIdPConfiguration> {
                 .target(configuration.nodeConfig.endpoint)
                 .request(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, QiyNodeClient.getAuthHeader(null))
-                .header("password", configuration.nodeConfig.getPassword())
+                .header("password", configuration.nodeConfig.password)
                 .get();
         // @formatter:on
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
