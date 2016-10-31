@@ -27,6 +27,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.media.sse.SseFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,12 +35,12 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import io.dropwizard.Application;
 import io.dropwizard.cli.EnvironmentCommand;
+import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.setup.Environment;
 import net.sourceforge.argparse4j.inf.Namespace;
 import nl.qiy.demo.idp.dw.DemoIdPConfiguration;
 import nl.qiy.oic.op.qiy.QiyNodeClient;
-import nl.qiy.oic.op.service.JaxrsClientService;
 
 /**
  * TODO: friso should have written a comment here to tell us what this class does
@@ -64,8 +65,11 @@ public class ApiInfoCommand extends EnvironmentCommand<DemoIdPConfiguration> {
     @Override
     protected void run(Environment environment, Namespace namespace, DemoIdPConfiguration configuration)
             throws Exception {
-        Client client = JaxrsClientService.getClient();
-
+        // @formatter:off
+        Client client = new JerseyClientBuilder(environment)
+                .using(configuration.getJerseyClientConfiguration())
+                .build(getName()); // @formatter:on 
+        client.register(SseFeature.class);
         // @formatter:off
         Response response = client
                 .target(configuration.nodeConfig.endpoint)

@@ -15,7 +15,7 @@ qrConfig:
   height: 180
 
 nodeConfig:
-  id: 1e84423a-788e-4fbe-b1b9-1d23160253ba
+  id: 96c6fc5f-ffba-4d18-bfd1-f4d99b7f70f1
   endpoint: http://localhost:8087/user/api
   secretsFilename: node-secrets.json
   
@@ -27,7 +27,7 @@ clientConfig:
   
 iss: https://digital-me.nl
 baseUri: http://localhost:8093/oidcp/
-registerCallbackUri: http://localhost:8087/user/connections/user/1e84423a-788e-4fbe-b1b9-1d23160253ba/state?durationValid=PT45M&times=1
+registerCallbackUri: http://localhost:8087/user/connections/user/96c6fc5f-ffba-4d18-bfd1-f4d99b7f70f1/state?durationValid=PT45M&times=1
 dappreBaseURI: http://localhost:8091/card/
 
 sessionTimeoutInSeconds: 2700

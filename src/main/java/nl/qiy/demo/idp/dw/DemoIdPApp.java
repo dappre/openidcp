@@ -24,7 +24,6 @@ import javax.ws.rs.client.Client;
 
 import org.eclipse.jetty.nosql.jedis.JedisSessionManager;
 import org.eclipse.jetty.server.session.SessionHandler;
-import org.glassfish.jersey.media.sse.SseFeature;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 
@@ -35,7 +34,6 @@ import io.dropwizard.setup.Environment;
 import nl.qiy.demo.idp.dw.cli.ApiInfoCommand;
 import nl.qiy.demo.idp.dw.health.DefaultHealth;
 import nl.qiy.demo.idp.dw.health.ServiceLoaderHealth;
-import nl.qiy.demo.idp.dw.sp.JaxrsClientImpl;
 import nl.qiy.oic.op.ContextListener;
 import nl.qiy.oic.op.api.AuthenticationResource;
 import nl.qiy.oic.op.api.CORSFilter;
@@ -43,6 +41,7 @@ import nl.qiy.oic.op.api.DiscoveryResource;
 import nl.qiy.oic.op.api.InputResetFilter;
 import nl.qiy.oic.op.api.OAuthExceptionMapper;
 import nl.qiy.oic.op.qiy.QiyAuthorizationFlow;
+import nl.qiy.oic.op.qiy.QiyNodeClient;
 import nl.qiy.openid.op.spi.impl.demo.MessageDAO;
 import nl.qiy.openid.op.spi.impl.demo.OpSdkSpiImplConfiguration;
 
@@ -71,13 +70,11 @@ public class DemoIdPApp extends Application<DemoIdPConfiguration> {
     @Override
     public void run(final DemoIdPConfiguration configuration, final Environment environment) {
         OpSdkSpiImplConfiguration.setInstance(configuration);
-
         // @formatter:off
         Client client = new JerseyClientBuilder(environment)
                 .using(configuration.getJerseyClientConfiguration())
                 .build(getName()); // @formatter:on 
-        client.register(SseFeature.class);
-        JaxrsClientImpl.setClient(client);
+        QiyNodeClient.setJaxRsClient(client);
 
         JedisPoolManager jedisPoolManager = new JedisPoolManager(configuration.jedisConfiguration);
         environment.lifecycle().manage(jedisPoolManager);
