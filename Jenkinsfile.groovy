@@ -3,7 +3,7 @@
 def update='micro'
 def branch='master'
 def release=false
-def project='openidcp'
+def giturl='git@github.com:digital-me/openidcp.git'
 def tagPrefix='rel-'
 
 node {
@@ -20,7 +20,7 @@ node {
             artifactoryMaven.deployer releaseRepo:'Qiy', snapshotRepo:'Qiy', server: server
             artifactoryMaven.resolver releaseRepo:'libs-releases', snapshotRepo:'libs-snapshots', server: server
             
-            git url: 'git@github.com:digital-me/${project}.git'
+            git url: giturl
             sh "mvn clean"
             def currVersion=sh (script: 'tmp=\$(git tag -l  "${tagPrefix}*" | cut -d\'-\' -f2- | sort -r -V | head -n1);echo \${tmp:-\'0.0.12\'}', returnStdout: true).trim()
             newVersion = nextVersion(update, currVersion);
@@ -32,7 +32,6 @@ node {
         stage('Build & Deploy') {
             def buildInfo = Artifactory.newBuildInfo()
             artifactoryMaven.run pom: 'pom.xml', goals: 'install', buildInfo: buildInfo
-            junit testResults: '**/target/surefire-reports/*.xml'
             sh "git tag -a 'rel-${newVersion}' -m 'Release tag by Jenkins'"
             sshagent(['5549fdb7-4cda-4dae-890c-2c19369da699']) {
                 sh "git -c core.askpass=true push origin 'rel-${newVersion}'"
