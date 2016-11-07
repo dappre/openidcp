@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def depVersion='0.0.13'       // version of the sdk-spi-impl, on which this project depends
+def depVersion='0.0.14'       // version of the sdk-spi-impl, on which this project depends
 def update='micro'            // needs to be set here in the source
 def project='openidcp'        // needs to be set here in the source
 def credid='5549fdb7-4cda-4dae-890c-2c19369da699' // jenkins id for deployer key for this project
