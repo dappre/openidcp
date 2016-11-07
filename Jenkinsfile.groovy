@@ -34,7 +34,7 @@ node {
             sh "sed -i -e 's|<version>0.0.0</version>|<version>${depVersion}</version>|' pom.xml"
         }
         
-        stage('Build & Deploy') {            
+        stage('Build & Deploy') {     
             def buildInfo = Artifactory.newBuildInfo()
             def server = Artifactory.server('qiy-artifactory@boxtel')
             def artifactoryMaven = Artifactory.newMavenBuild()
@@ -51,11 +51,21 @@ node {
                 }
             }
         }
-
+        
+        stage('Build RPM') {
+            build job: 'RPM Build Webapp', parameters: [
+                [$class: 'StringParameterValue', name: 'NAME', value: project],
+                [$class: 'StringParameterValue', name: 'RELEASE_VERSION', value: newVersion],
+                [$class: 'StringParameterValue', name: 'RELEASE_NUMBER', value: '0.1'],
+                [$class: 'StringParameterValue', name: 'TARGET', value: 'orion1.boxtel'],
+                [$class: 'StringParameterValue', name: 'VERBOSE', value: '1']
+            ]
+        }
+        
         stage('Deliver RPM') {
             build job: 'RPM Delivery Webapp', parameters: [
                 [$class: 'StringParameterValue', name: 'NAME', value: project],
-                [$class: 'StringParameterValue', name: 'VERSION', value: '0.0.13'],
+                [$class: 'StringParameterValue', name: 'VERSION', value: newVersion],
                 [$class: 'StringParameterValue', name: 'RELEASE', value: '0.1'],
                 [$class: 'StringParameterValue', name: 'MODE', value: 'clean'],
                 // light/purge/rollback
