@@ -4,7 +4,7 @@ def depVersion='0.0.15'       // version of the sdk-spi-impl, on which this proj
 def update='micro'            // needs to be set here in the source
 def project='openidcp'        // needs to be set here in the source
 def credid='5549fdb7-4cda-4dae-890c-2c19369da699' // jenkins id for deployer key for this project
-def branch='master'           // can we get this as a parameter?
+def branch='DAP-586'           // can we get this as a parameter?
 def release=true              // by default false; true if parameter
 
 def giturl="git@github.com:digital-me/${project}.git"  // NB: this is the format ssh-agent understands
