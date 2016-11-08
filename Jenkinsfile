@@ -70,10 +70,16 @@ node {
         }
         
         stage('Deliver RPM') {
+            def ver = newVersion;
+            def rel = '0.1';
+            if (!release) {
+                ver = newVersion.replace("-SNAPSHOT", "");
+                rel = 'SNAPSHOT';
+            }        
             build job: 'RPM Delivery Webapp', parameters: [
                 [$class: 'StringParameterValue', name: 'NAME', value: project],
-                [$class: 'StringParameterValue', name: 'VERSION', value: newVersion],
-                [$class: 'StringParameterValue', name: 'RELEASE', value: '0.1'],
+                [$class: 'StringParameterValue', name: 'VERSION', value: ver],
+                [$class: 'StringParameterValue', name: 'RELEASE', value: rel],
                 [$class: 'StringParameterValue', name: 'MODE', value: 'clean'],
                 // light/purge/rollback
                 // TODO [FV 20161107]: Guess depending on the developer this should be dev1, dev2 ... devn 
