@@ -1,11 +1,11 @@
 #!/usr/bin/env groovy
 
-def depVersion='0.0.15-SNAPSHOT' // version of the sdk-spi-impl, on which this project depends
+def depVersion='0.0.15'       // version of the sdk-spi-impl, on which this project depends
 def update='micro'            // needs to be set here in the source
 def project='openidcp'        // needs to be set here in the source
 def credid='5549fdb7-4cda-4dae-890c-2c19369da699' // jenkins id for deployer key for this project
 def branch='master'           // can we get this as a parameter?
-def release=false              // by default false; true if parameter
+def release=true              // by default false; true if parameter
 
 def giturl="git@github.com:digital-me/${project}.git"  // NB: this is the format ssh-agent understands
 def tagPrefix="${branch}-"    // maybe: branch name?
@@ -53,10 +53,17 @@ node {
         }
         
         stage('Build RPM') {
+            def ver = newVersion;
+            def rel = '0.1';
+            if (!release) {
+                ver = newVersion.replace("-SNAPSHOT", "");
+                rel = 'SNAPSHOT';
+            }
+            
             build job: 'RPM Build Webapp', parameters: [
                 [$class: 'StringParameterValue', name: 'NAME', value: project],
-                [$class: 'StringParameterValue', name: 'RELEASE_VERSION', value: newVersion],
-                [$class: 'StringParameterValue', name: 'RELEASE_NUMBER', value: '0.1'],
+                [$class: 'StringParameterValue', name: 'RELEASE_VERSION', value: ver],
+                [$class: 'StringParameterValue', name: 'RELEASE_NUMBER', value: rel],
                 [$class: 'StringParameterValue', name: 'TARGET', value: 'orion1.boxtel'],
                 [$class: 'StringParameterValue', name: 'VERBOSE', value: '1']
             ]
