@@ -16,8 +16,3 @@ keytool.exe -genkeypair -keyalg RSA -keysize 2048 -ext KU:c=encipherOnly -alias 
 keytool.exe -genkeypair -keyalg EC -keysize 256 -ext KU:c=encipherOnly -alias e2 -keystore demo.jks
 keytool.exe -genkeypair -keyalg EC -keysize 256 -ext KU:c=digitalSignature -alias s2 -keystore demo.jks
 
-# NB: nodetype jceks is needed to store a shared secret  
-# passphrase = qiy-demo
-keytool.exe -genseckey -alias nodesecret -keyalg AES -keysize 128 -storetype jceks -keystore node.jceks
-keytool.exe -genkeypair -alias nodekeypair -keyalg RSA -keysize 2048  -storetype jceks -keystore node.jceks
-  

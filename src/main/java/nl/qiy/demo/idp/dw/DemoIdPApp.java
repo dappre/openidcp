@@ -41,6 +41,7 @@ import nl.qiy.oic.op.api.InputResetFilter;
 import nl.qiy.oic.op.api.OAuthExceptionMapper;
 import nl.qiy.oic.op.qiy.QiyAuthorizationFlow;
 import nl.qiy.oic.op.qiy.QiyNodeClient;
+import nl.qiy.oic.op.qiy.ServerSentEventStreams;
 import nl.qiy.openid.op.spi.impl.demo.MessageDAO;
 import nl.qiy.openid.op.spi.impl.demo.OpSdkSpiImplConfiguration;
 
@@ -75,6 +76,7 @@ public class DemoIdPApp extends Application<DemoIdPConfiguration> {
                 .build(getName()); // @formatter:on 
         QiyNodeClient.setJaxRsClient(client);
 
+        environment.lifecycle().manage(ServerSentEventStreams.getInstance());
         JedisPoolManager jedisPoolManager = new JedisPoolManager(configuration.jedisConfiguration);
         environment.lifecycle().manage(jedisPoolManager);
         MessageDAO.setPool(jedisPoolManager.jedisPool);
