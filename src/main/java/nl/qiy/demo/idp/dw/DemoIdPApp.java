@@ -22,6 +22,7 @@ package nl.qiy.demo.idp.dw;
 import javax.servlet.FilterRegistration.Dynamic;
 import javax.ws.rs.client.Client;
 
+import org.eclipse.jetty.nosql.jedis.JedisSessionManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -80,11 +81,11 @@ public class DemoIdPApp extends Application<DemoIdPConfiguration> {
         JedisPoolManager jedisPoolManager = new JedisPoolManager(configuration.jedisConfiguration);
         environment.lifecycle().manage(jedisPoolManager);
         MessageDAO.setPool(jedisPoolManager.jedisPool);
-        // SessionHandler sessionHandler = new SessionHandler(new JedisSessionManager(jedisPoolManager.jedisPool));
-        // if (configuration.sessionTimeoutInSeconds != null) {
-        // sessionHandler.getSessionManager().setMaxInactiveInterval(configuration.sessionTimeoutInSeconds.intValue());
-        // }
-        SessionHandler sessionHandler = new SessionHandler();
+        SessionHandler sessionHandler = new SessionHandler(new JedisSessionManager(jedisPoolManager.jedisPool));
+        if (configuration.sessionTimeoutInSeconds != null) {
+            sessionHandler.getSessionManager().setMaxInactiveInterval(configuration.sessionTimeoutInSeconds.intValue());
+        }
+        // SessionHandler sessionHandler = new SessionHandler();
 
         ContextListener contextListener = new ContextListener();
         environment.servlets().addServletListeners(contextListener);
