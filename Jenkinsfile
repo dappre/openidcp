@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def depVersion='0.0.17'       // version of the sdk-spi-impl, on which this project depends
+def depVersion='0.0.18'       // version of the sdk-spi-impl, on which this project depends
 def update='micro'            // needs to be set here in the source
 def project='openidcp'        // needs to be set here in the source
 def credid='5549fdb7-4cda-4dae-890c-2c19369da699' // jenkins id for deployer key for this project
@@ -47,7 +47,7 @@ node {
                     
             artifactoryMaven.run pom: 'pom.xml', goals: goals, buildInfo: buildInfo
             //junit testResults: '**/target/surefire-reports/*.xml'
-            step ([$class: 'DependencyCheckPublisher', usePreviousBuildAsReference: true])
+            //step ([$class: 'DependencyCheckPublisher', usePreviousBuildAsReference: true])
             
             if (release) {
                 sh "git tag -a '${tagPrefix}${newVersion}' -m 'Release tag by Jenkins'"
