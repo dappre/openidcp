@@ -5,7 +5,7 @@
 		<notes><![CDATA[
    op-sdk-lib.jar is not OpenID, rather OpenID Connect
    ]]></notes>
-		<gav regex="true">^nl\.qiy\.openid-connect:op-sdk-lib:.*$</gav>
+		<gav regex="true">^nl\.qiy\.openid-connect:op-sdk-.*:.*$</gav>
 		<cpe>cpe:/a:openid:openid</cpe>
 	</suppress>
 </suppressions>
