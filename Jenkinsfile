@@ -5,7 +5,7 @@ def update='micro'            // needs to be set here in the source
 def project='openidcp'        // needs to be set here in the source
 def credid='5549fdb7-4cda-4dae-890c-2c19369da699' // jenkins id for deployer key for this project
 def branch='master'           // can we get this as a parameter?
-def release=true              // by default false; true if parameter
+def release=false              // by default false; true if parameter
 
 def giturl="git@github.com:digital-me/${project}.git"  // NB: this is the format ssh-agent understands
 def tagPrefix="${branch}-"    // maybe: branch name?
@@ -42,6 +42,7 @@ node {
             def server = Artifactory.server('qiy-artifactory@boxtel')
             def artifactoryMaven = Artifactory.newMavenBuild()
             artifactoryMaven.tool = 'maven' // Tool name from Jenkins configuration
+            artifactoryMaven.opts = '-Djava.io.tmpdir="/opt/tmp"'
             artifactoryMaven.deployer releaseRepo:'Qiy', snapshotRepo:'Qiy', server: server
             artifactoryMaven.resolver releaseRepo:'libs-releases', snapshotRepo:'libs-snapshots', server: server
                     
