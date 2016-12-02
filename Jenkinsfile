@@ -71,7 +71,7 @@ def buildRPM(script, config) {
         def ver = config['newVersion'];
         def rel = '0.1';
         if (!config['release']) {
-            ver = newVersion.replace("-SNAPSHOT", "");
+            ver = config['newVersion'].replace("-SNAPSHOT", "");
             rel = 'SNAPSHOT';
         }
         
