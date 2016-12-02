@@ -58,11 +58,12 @@ public class DemoIdPConfiguration extends OpSdkSpiImplConfiguration {
             @JsonProperty("registerCallbackUri") String registerCallbackUri, @JsonProperty("iss") String iss,
             @JsonProperty("jwkConfigs") Map<String, Map<String, JWKConfig>> jwkConfigs,
             @JsonProperty("cardMsgUri") String cardMsgUri,
-            @JsonProperty("requireCard") Boolean requireCard, 
+            @JsonProperty("requireCard") String cardLoginOption, 
+            @JsonProperty("welcomeMessage") String welcomeMessage,
             @JsonProperty("jedisConfiguration") JedisConfiguration jedisConfiguration,
             @JsonProperty("jerseyClient") JerseyClientConfiguration jerseyClient) { // @formatter:on 
         super(qrConfig, clientConfig, nodeConfig, cryptoConfig, baseUri, registerCallbackUri, iss, jwkConfigs,
-                cardMsgUri, requireCard, jedisConfiguration);
+                cardMsgUri, cardLoginOption, welcomeMessage, jedisConfiguration);
         this.sessionTimeoutInSeconds = sessionTimeoutInSeconds;
         if (jerseyClient != null) {
             this.jerseyClient = jerseyClient;
