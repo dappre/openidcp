@@ -55,7 +55,7 @@ def deployRPM(script, config, env) {
     stage("Deliver to ${env}") {
         def ver = config['newVersion'];
         def rel = '0.1';
-        if (!release) {
+        if (!config['release']) {
             ver = ver.replace("-SNAPSHOT", "");
             rel = 'SNAPSHOT';
         }
