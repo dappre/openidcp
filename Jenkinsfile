@@ -19,14 +19,8 @@ def config = [
     newVersion: null
 ];
 
-config['giturl'] = "git@github.com:digital-me/${config['project']}.git" // NB: this is the format ssh-agent understands
 
-if (env.BRANCH_NAME != null) {
-    println "branch: ${env.BRANCH_NAME}"
-    config['branch']=env.BRANCH_NAME;
-} else {
-    println "not a multibranch, branch is master"
-}
+multibranchGitHub(env.BRANCH_NAME, config);
 
 println config
 
@@ -40,6 +34,21 @@ node {
         deployRPM(this, config, "dev1")
         
     }
+}
+
+// all below this should be moved to some library
+
+
+def multibranchGitHub(branch, config) {
+    config['giturl'] = "git@github.com:digital-me/${config['project']}.git" // NB: this is the format ssh-agent understands
+    
+    if (branch != null) {
+        println "branch: ${branch}"
+        config['branch']=branch;
+    } else {
+        println "not a multibranch, branch is master"
+    }
+    
 }
 
 def deployRPM(script, config, env) {
