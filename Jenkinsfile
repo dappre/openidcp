@@ -53,10 +53,10 @@ def multibranchGitHub(branch, config) {
 
 def deployRPM(script, config, env) {
     stage("Deliver to ${env}") {
-        def ver = newVersion;
+        def ver = config['newVersion'];
         def rel = '0.1';
         if (!release) {
-            ver = newVersion.replace("-SNAPSHOT", "");
+            ver = ver.replace("-SNAPSHOT", "");
             rel = 'SNAPSHOT';
         }
         build job: 'RPM Delivery Webapp', parameters: [
