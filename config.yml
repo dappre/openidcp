@@ -11,24 +11,24 @@
 # limitations under the License.
 
 qrConfig:
-  width: 180
-  height: 180
+  width: 200
+  height: 200
 
 nodeConfig:
-  id: 96c6fc5f-ffba-4d18-bfd1-f4d99b7f70f1
-  endpoint: http://localhost:8087/user/api
+  id: 587139e2-eee1-44c7-85ed-1af62fb24635
+  endpoint: https://dappre-all.local/user/api
   secretsFilename: node-secrets.json
   
 clientConfig: 
   - id: s6BhdRkqt3
     uriRegex: https://client.example.org/cb
   - id: rudy
-    uriRegex: https?://localhost:8095/.*
+    uriRegex: https?://.*
   
 iss: https://digital-me.nl
-baseUri: http://localhost:8093/oidcp/
-registerCallbackUri: http://localhost:8087/user/connections/user/96c6fc5f-ffba-4d18-bfd1-f4d99b7f70f1/state?durationValid=PT45M&times=1
-dappreBaseURI: http://localhost:8091/card/
+baseUri: https://dappre-all.local/oidcp/
+registerCallbackUri: https://dappre-all.local/user/connections/user/587139e2-eee1-44c7-85ed-1af62fb24635/state?durationValid=PT45M&times=1
+dappreBaseURI: https://dappre-all.local/card/
 
 sessionTimeoutInSeconds: 2700
 

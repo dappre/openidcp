@@ -19,8 +19,13 @@
 
 package nl.qiy.demo.idp.dw;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+
 import javax.servlet.FilterRegistration.Dynamic;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.core.MediaType;
 
 import org.eclipse.jetty.server.session.SessionHandler;
 
@@ -42,6 +47,7 @@ import nl.qiy.oic.op.api.OAuthExceptionMapper;
 import nl.qiy.oic.op.qiy.QiyAuthorizationFlow;
 import nl.qiy.oic.op.qiy.QiyNodeClient;
 import nl.qiy.oic.op.qiy.ServerSentEventStreams;
+import nl.qiy.oic.op.qiy.messagebodywriter.TemplateConnectTokenBodyWriter;
 import nl.qiy.openid.op.spi.impl.demo.MessageDAO;
 import nl.qiy.openid.op.spi.impl.demo.OpSdkSpiImplConfiguration;
 
@@ -95,6 +101,9 @@ public class DemoIdPApp extends Application<DemoIdPConfiguration> {
         dynamic.setInitParameter("allowAll", "true");
         dynamic.addMappingForUrlPatterns(null, true, "/*");
 
+        TemplateConnectTokenBodyWriter.registerTemplate(getHtmlQCTTemplate(), MediaType.TEXT_HTML_TYPE);
+        environment.jersey().register(TemplateConnectTokenBodyWriter.class);
+
         environment.jersey().register(new AuthenticationResource());
         environment.jersey().register(QiyAuthorizationFlow.getInstance(configuration.dappreBaseURI));
         environment.jersey().register(new DiscoveryResource());
@@ -105,6 +114,14 @@ public class DemoIdPApp extends Application<DemoIdPConfiguration> {
         environment.getObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         environment.healthChecks().register("default-status", new DefaultHealth());
+    }
+
+    private String getHtmlQCTTemplate() {
+        // @formatter:off
+        return new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/index.html")))
+                .lines()
+                .collect(Collectors.joining(" "))
+                .replaceAll("\\s+", " "); // @formatter:on
     }
 
 }
