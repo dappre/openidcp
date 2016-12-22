@@ -4,3 +4,5 @@
 /.project
 .idea/
 openidcp.iml
+/src/main/generate-login-page/build/
+/src/main/generate-login-page/node_modules/
