@@ -15,7 +15,7 @@ qrConfig:
   height: 200
 
 nodeConfig:
-  id: 587139e2-eee1-44c7-85ed-1af62fb24635
+  id: 68aaeb98-dc38-4ab2-9a19-d0f3b66a3f0f
   endpoint: https://dappre-all.local/user/api
   secretsFilename: node-secrets.json
   
@@ -27,7 +27,7 @@ clientConfig:
   
 iss: https://digital-me.nl
 baseUri: https://dappre-all.local/oidcp/
-registerCallbackUri: https://dappre-all.local/user/connections/user/587139e2-eee1-44c7-85ed-1af62fb24635/state?durationValid=PT45M&times=1
+registerCallbackUri: https://dappre-all.local/user/connections/user/68aaeb98-dc38-4ab2-9a19-d0f3b66a3f0f/state?durationValid=PT45M&times=1
 dappreBaseURI: https://dappre-all.local/card/
 
 sessionTimeoutInSeconds: 2700
