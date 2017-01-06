@@ -21,7 +21,7 @@
 
 body {
 	background-color: @primary-color;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	//font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-align: center;
 }
 
@@ -32,8 +32,8 @@ body {
 }
 html {
 	&.no-desktop {
-		.qr-code 				{ display: none; }
-		.login-button 			{ display: block; }
+		.qr-code 					{ display: none; }
+		.login-button 				{ display: block; }
 
 		&.ios,
 		&.android {
@@ -43,7 +43,7 @@ html {
 	}
 	&.ios,
 	&.android {
-		.toggle-button.button 	{ display: block; }
+		.toggle-button.button 		{ display: block; }
 	}
 }
 
@@ -251,18 +251,6 @@ svg {
 	#qtf-icon {
 		path {
 			fill: black;
-		}
-	}
-	#qrcode-qiy-icon {
-		.bg {
-			fill: white;
-			stroke: white;
-			stroke-linecap: round;
-			stroke-linejoin: round;
-			stroke-width: 3px;
-		}
-		#oval-bg {
-			fill: white;
 		}
 	}
 	#aegon-logo {

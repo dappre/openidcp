@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Test Response Evaluation</title>
+</head>
+<body>
+
+<h1>Response</h1>
+
+<h2>Overall result</h2>
+<div id="overall"></div>
+<div id="id_token" style="display: none">
+	<table>
+		<tr><td>Algorithm:</td><td id="id_token_0"></td></tr>
+		<tr><td valign="top">Claims:</td><td><pre id="id_token_1"></pre></td></tr>
+		<tr><td>Signature (base64):</td><td id="id_token_2"></td></tr>
+	</table>
+</div>
+<div id="access_token"></div>
+
+
+<h2>Raw result</h2>
+<pre id="raw"></pre>
+<script type="text/javascript">
+
+function parseResponse(res) {
+	var vars = res.split('&');
+	var result = {};
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        result[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]); 
+    }	
+    return result;
+}
+
+var queryStringStart = document.location.href.indexOf('?');
+var fragmentStart = document.location.href.indexOf('#');
+
+var overall = document.getElementById("overall");
+var response;
+	
+if (queryStringStart > 0 && fragmentStart > 0) {
+	overall.innerHTML = "Illegal response, contains both query string and fragment";
+} else if (queryStringStart > 0) {
+	overall.innerHTML = "Response in Query String";
+	response = document.location.href.substring(queryStringStart + 1);
+} else if (fragmentStart > 0) {
+	overall.innerHTML = "Response in Fragment";
+	response = document.location.href.substring(fragmentStart + 1);
+} else {
+	overall.innerHTML = "Illegal response, contains neither query string nor fragment";
+}
+
+var map = parseResponse(response);
+if (map['id_token']) {
+	var tuple = map['id_token'].split('.');
+	if (tuple.length == 3) {
+		document.getElementById("id_token").style.display='';
+		document.getElementById("id_token_0").innerHTML = window.atob(tuple[0]);
+		document.getElementById("id_token_1").innerHTML = JSON.stringify(JSON.parse(window.atob(tuple[1])), null, '\t');
+		document.getElementById("id_token_2").innerHTML = tuple[2];
+	}
+}
+if (map['access_token']) {
+	document.getElementById("access_token").innerHTML = "Access token (base64):<br> " + map['access_token'];
+}
+
+document.getElementById("raw").innerHTML = JSON.stringify(map, null, '\t');
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Generate test request</title>
+</head>
+<body>
+	<form method="get" action="./" id="the_form">
+		<input type="submit">
+		<table>
+			<tr>
+				<td>Response Type</td>
+				<td>
+					<select name="response_type">
+						<option>id_token token</option>
+						<option>id_token</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>Client id</td>
+				<td><input type="text" name="client_id" value="rudy"></td>
+			</tr>
+			<tr>
+				<td>Response Type</td>
+				<td><input type="text" id="redirect_input" name="redirect_uri"></td>
+			</tr>
+			<tr>
+				<td>Response Mode</td>
+				<td>
+					<select name="response_mode">
+						<option>query</option>
+						<option>fragment</option>
+						<option>form_post</option>
+					</select> 
+				</td>
+			</tr>
+			<tr>
+				<td>Scope</td>
+				<td><input type="text" name="scope" value="openid"></td>
+			</tr>
+			<tr>
+				<td>State</td>
+				<td><input id="state_input" type="text" name="state"></td>
+			</tr>
+			<tr>
+				<td>Nonce</td>
+				<td><input id="nonce_input" type="text" name="nonce"></td>
+			</tr>
+		</table>
+	</form>
+	
+	<script type="text/javascript">
+		// hattip http://stackoverflow.com/a/1350278/1127980
+		function randomstring(L){
+		    var s= '';
+		    var randomchar=function(){
+		        var n= Math.floor(Math.random()*62);
+		        if(n<10) return n; //1-10
+		        if(n<36) return String.fromCharCode(n+55); //A-Z
+		        return String.fromCharCode(n+61); //a-z
+		    }
+		    while(s.length< L) s+= randomchar();
+		    return s;
+		}
+	
+		document.getElementById('the_form').action = document.location.href.replace(/test.*/, '');
+		document.getElementById('state_input').value = randomstring(12);
+		document.getElementById('nonce_input').value = randomstring(8);
+		document.getElementById('redirect_input').value = document.location.href.replace('create', 'redirect');
+		
+	</script>
+	
+</body>
+</html>

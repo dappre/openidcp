@@ -36,8 +36,10 @@ import io.dropwizard.Application;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import nl.qiy.demo.idp.dw.api.TestInvokerResource;
 import nl.qiy.demo.idp.dw.cli.ApiInfoCommand;
 import nl.qiy.demo.idp.dw.health.DefaultHealth;
+import nl.qiy.demo.idp.dw.health.JedisHealth;
 import nl.qiy.demo.idp.dw.health.ServiceLoaderHealth;
 import nl.qiy.oic.op.ContextListener;
 import nl.qiy.oic.op.api.AuthenticationResource;
@@ -88,6 +90,7 @@ public class DemoIdPApp extends Application<DemoIdPConfiguration> {
         environment.lifecycle().manage(jedisPoolManager);
         MessageDAO.setPool(jedisPoolManager.jedisPool);
         SessionHandler sessionHandler = new SessionHandler(new JedisSessionManager(jedisPoolManager.jedisPool));
+
         // SessionHandler sessionHandler = new SessionHandler();
         if (configuration.sessionTimeoutInSeconds != null) {
             sessionHandler.getSessionManager().setMaxInactiveInterval(configuration.sessionTimeoutInSeconds.intValue());
@@ -109,12 +112,14 @@ public class DemoIdPApp extends Application<DemoIdPConfiguration> {
         environment.jersey().register(QiyAuthorizationFlow.getInstance(configuration.dappreBaseURI));
         environment.jersey().register(new DiscoveryResource());
         environment.jersey().register(new OAuthExceptionMapper());
+        environment.jersey().register(new TestInvokerResource());
 
         environment.healthChecks().register("ServiceLoaderHealth", new ServiceLoaderHealth(contextListener));
 
         environment.getObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         environment.healthChecks().register("default-status", new DefaultHealth());
+        environment.healthChecks().register("Redis", new JedisHealth(jedisPoolManager.jedisPool));
     }
 
     private String getHtmlQCTTemplate() {
