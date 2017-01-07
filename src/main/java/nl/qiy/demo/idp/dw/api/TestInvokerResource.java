@@ -18,10 +18,9 @@
  */
 package nl.qiy.demo.idp.dw.api;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -49,13 +48,20 @@ public class TestInvokerResource {
     private String testPage;
     private String responsePage;
 
+    private String getResourceAsString(String resource) {
+        // @formatter:off
+        return new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(resource)))
+                .lines()
+                .collect(Collectors.joining("\n")); // @formatter:on
+    }
+
     @Path("create")
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public String getInvoker() throws IOException, URISyntaxException {
+    public String getInvoker() {
+        LOGGER.info("creating test page");
         if (testPage == null) {
-            testPage = new String(
-                    Files.readAllBytes(Paths.get(TestInvokerResource.class.getResource("/test-call.html").toURI())));
+            testPage = getResourceAsString("/test-call.html");
         }
         return testPage;
     }
@@ -63,10 +69,10 @@ public class TestInvokerResource {
     @Path("redirect")
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public String redirect() throws IOException, URISyntaxException {
+    public String redirect() {
+        LOGGER.info("Consuming redirect response");
         if (responsePage == null) {
-            responsePage = new String(
-                    Files.readAllBytes(Paths.get(TestInvokerResource.class.getResource("/test-respond.html").toURI())));
+            responsePage = getResourceAsString("/test-respond.html");
         }
         return responsePage;
     }
@@ -75,6 +81,7 @@ public class TestInvokerResource {
     @POST
     @Produces(MediaType.TEXT_HTML)
     public static String redirectPost(@Context HttpServletRequest request) {
+        LOGGER.info("Consuming redirect response, form post (won't work)");
         return request.getParameterMap().toString();
     }
 
