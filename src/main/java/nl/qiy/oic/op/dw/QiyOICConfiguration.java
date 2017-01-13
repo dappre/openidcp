@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package nl.qiy.demo.idp.dw;
+package nl.qiy.oic.op.dw;
 
 import java.util.List;
 import java.util.Map;
@@ -30,15 +30,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.util.Duration;
-import nl.qiy.openid.op.spi.impl.demo.CryptoConfig;
-import nl.qiy.openid.op.spi.impl.demo.JWKConfig;
-import nl.qiy.openid.op.spi.impl.demo.JedisConfiguration;
-import nl.qiy.openid.op.spi.impl.demo.OAuthClientConfig;
-import nl.qiy.openid.op.spi.impl.demo.OpSdkSpiImplConfiguration;
-import nl.qiy.openid.op.spi.impl.demo.QRConfig;
-import nl.qiy.openid.op.spi.impl.demo.QiyNodeConfig;
+import nl.qiy.oic.op.qiy.QRConfig;
+import nl.qiy.oic.op.qiy.QiyNodeConfig;
+import nl.qiy.openid.op.spi.impl.config.CryptoConfig;
+import nl.qiy.openid.op.spi.impl.config.JWKConfig;
+import nl.qiy.openid.op.spi.impl.config.OAuthClientConfig;
+import nl.qiy.openid.op.spi.impl.config.OpSdkSpiImplConfiguration;
+import nl.qiy.openid.op.spi.impl.jedis.JedisConfiguration;
 
-public class DemoIdPConfiguration extends OpSdkSpiImplConfiguration {
+public class QiyOICConfiguration extends OpSdkSpiImplConfiguration {
 
     private boolean jerseyConfigDone = false;
 
@@ -50,7 +50,7 @@ public class DemoIdPConfiguration extends OpSdkSpiImplConfiguration {
 
     // @formatter:off
     @JsonCreator //NOSONAR
-    public DemoIdPConfiguration(@JsonProperty("qrConfig") QRConfig qrConfig, // NOSONAR
+    public QiyOICConfiguration(@JsonProperty("qrConfig") QRConfig qrConfig, // NOSONAR
             @JsonProperty("sessionTimeoutInSeconds") Integer sessionTimeoutInSeconds,
             @JsonProperty("clientConfig") List<OAuthClientConfig> clientConfig,
             @JsonProperty("nodeConfig") QiyNodeConfig nodeConfig,

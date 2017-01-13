@@ -23,4 +23,4 @@
  * @author Friso Vrolijken
  * @since 2 jun. 2016
  */
-package nl.qiy.demo.idp.dw.cli;
+package nl.qiy.oic.op.dw.cli;

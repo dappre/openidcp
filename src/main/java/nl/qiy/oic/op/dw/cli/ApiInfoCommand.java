@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package nl.qiy.demo.idp.dw.cli;
+package nl.qiy.oic.op.dw.cli;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +39,7 @@ import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.setup.Environment;
 import net.sourceforge.argparse4j.inf.Namespace;
-import nl.qiy.demo.idp.dw.DemoIdPConfiguration;
+import nl.qiy.oic.op.dw.QiyOICConfiguration;
 import nl.qiy.oic.op.qiy.QiyNodeClient;
 
 /**
@@ -48,7 +48,7 @@ import nl.qiy.oic.op.qiy.QiyNodeClient;
  * @author Friso Vrolijken
  * @since 2 jun. 2016
  */
-public class ApiInfoCommand extends EnvironmentCommand<DemoIdPConfiguration> {
+public class ApiInfoCommand extends EnvironmentCommand<QiyOICConfiguration> {
     /**
      * 
      */
@@ -58,12 +58,12 @@ public class ApiInfoCommand extends EnvironmentCommand<DemoIdPConfiguration> {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ApiInfoCommand.class);
 
-    public ApiInfoCommand(Application<DemoIdPConfiguration> config) {
+    public ApiInfoCommand(Application<QiyOICConfiguration> config) {
         super(config, "apiinfo", "Will query the user node for the API info request");
     }
 
     @Override
-    protected void run(Environment environment, Namespace namespace, DemoIdPConfiguration configuration)
+    protected void run(Environment environment, Namespace namespace, QiyOICConfiguration configuration)
             throws Exception {
         // @formatter:off
         Client client = new JerseyClientBuilder(environment)

@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.qiy.demo.idp.dw.api;
+package nl.qiy.oic.op.dw.api;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

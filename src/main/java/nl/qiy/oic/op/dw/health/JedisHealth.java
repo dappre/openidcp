@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package nl.qiy.demo.idp.dw.health;
+package nl.qiy.oic.op.dw.health;
 
 import java.net.InetAddress;
 import java.util.Map;

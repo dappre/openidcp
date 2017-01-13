@@ -17,12 +17,12 @@
  * limitations under the License.
  */
 
-package nl.qiy.demo.idp.dw;
+package nl.qiy.oic.op.dw;
 
 import com.google.common.base.Preconditions;
 
 import io.dropwizard.lifecycle.Managed;
-import nl.qiy.openid.op.spi.impl.demo.JedisConfiguration;
+import nl.qiy.openid.op.spi.impl.jedis.JedisConfiguration;
 import redis.clients.jedis.JedisPool;
 
 /**
