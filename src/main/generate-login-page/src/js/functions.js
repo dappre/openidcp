@@ -1,16 +1,3 @@
-if (typeof EventSource === "undefined") {
-	// IE and Edge
-	// https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events#Browser_compatibility
-	console.log("dynamically adding polyfill for EventSource")
-	var script = document.createElement('script');
-	script.src = 'https://cdnjs.cloudflare.com/ajax/libs/event-source-polyfill/0.0.7/eventsource.min.js';
-	script.type = 'text/javascript';
-	document.head.appendChild(script);
-
-	console.log("should be here now: ", typeof EventSource);
-
-}
-
 // toggle between the connect button and the qr code
 function toggle() {
     var html = document.getElementsByTagName("html")[0];
@@ -44,34 +31,28 @@ window.onload = function() {
     deviceCheck();
 };
 
+function handleLoggedIn(data){
+    console.log("loggedIn received", data);
+    if (data.page) {
+        var a = new DOMParser().parseFromString(data.page, "text/html");
+        var b = document.importNode(a.querySelector("form"), true);
+        document.getElementById("formHolder").appendChild(b);
+        document.forms[0].submit();
+    } else if (data.url) {
+        document.location.href = data.url;
+    } else {
+        console.log("do not know what to do with data");
+    }	
+}
 
 function doWatch() {
-	if (typeof EventSource == 'undefined') {
-		console.log('EventSource undefined, sleeping 100ms');
-		setTimeout(function() {
-			doWatch();
-		}, 100);
-		return;
-	}
-
 	// else
 	var watchUrl = "$notificationuri$";
 	console.log("watching ", watchUrl);
 	var evtSource = new EventSource(watchUrl);
 
 	evtSource.addEventListener("loggedIn", function(e) {
-	    console.log("loggedIn received", e);
-	    var data = JSON.parse(e.data);
-	    if (data.page) {
-	        var a = new DOMParser().parseFromString(data.page, "text/html");
-	        var b = document.importNode(a.querySelector("form"), true);
-	        document.getElementById("formHolder").appendChild(b);
-	        document.forms[0].submit();
-	    } else if (data.url) {
-	        document.location.href = data.url;
-	    } else {
-	        console.log("do not know what to do with data");
-	    }
+	    handleLoggedIn( JSON.parse(e.data));
 	}, false);
 
 	evtSource.onerror = function(e) {
@@ -81,6 +62,34 @@ function doWatch() {
 	};
 }
 
+if (typeof EventSource == 'undefined') {
+	var watchUrl = "$notificationuri$";
+	var responseTextIx = 0;
+	
+	console.log("watching ", watchUrl);
 
-doWatch();
+	var httpRequest = new XMLHttpRequest();
+    httpRequest.open('GET', watchUrl);
+    httpRequest.setRequestHeader('Accept', 'application/json');
+    httpRequest.addEventListener("progress", function() {
+    	var rt = httpRequest.responseText;
+    	console.log(rt);
+    	var e = JSON.parse(rt.substring(responseTextIx));
+    	if (e.name === "loggedIn") {
+    		handleLoggedIn(e.data);
+    	}
+    	responseTextIx = rt.lenth;
+    });
+    httpRequest.addEventListener("load", function() {
+    });
+    httpRequest.addEventListener("error", function() {
+    	console.log("error", arguments);
+    });
+    httpRequest.addEventListener("abort", function() {console.log("abort", arguments);});
+    httpRequest.onreadystatechange = function(){console.log("onreadystatechange", httpRequest);};
+    httpRequest.send();
+} else {
+	doWatch();
+}
+
 
