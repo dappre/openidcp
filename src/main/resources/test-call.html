@@ -19,10 +19,10 @@
 			</tr>
 			<tr>
 				<td>Client id</td>
-				<td><input type="text" name="client_id" value="rudy"></td>
+				<td><input type="text" name="client_id" value="selftest"></td>
 			</tr>
 			<tr>
-				<td>Response Type</td>
+				<td>Redirect URI</td>
 				<td><input type="text" id="redirect_input" name="redirect_uri"></td>
 			</tr>
 			<tr>
@@ -64,7 +64,7 @@
 		    return s;
 		}
 	
-		document.getElementById('the_form').action = document.location.href.replace(/test.*/, '');
+		document.getElementById('the_form').action = document.location.href.replace(/\/test\/.*/, '\/');
 		document.getElementById('state_input').value = randomstring(12);
 		document.getElementById('nonce_input').value = randomstring(8);
 		document.getElementById('redirect_input').value = document.location.href.replace('create', 'redirect');
