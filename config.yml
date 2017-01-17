@@ -21,7 +21,7 @@ nodeConfig:
   
 clientConfig: 
   - id: selftest
-    uriRegex: https://dappre-all.local.*
+    uriRegex: https://dappre-all.local/oidcp/test/redirect
   - id: rudy
     uriRegex: https?://.*
   

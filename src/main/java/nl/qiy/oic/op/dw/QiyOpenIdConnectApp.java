@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package nl.qiy.demo.idp.dw;
+package nl.qiy.oic.op.dw;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -36,23 +36,23 @@ import io.dropwizard.Application;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import nl.qiy.demo.idp.dw.api.TestInvokerResource;
-import nl.qiy.demo.idp.dw.cli.ApiInfoCommand;
-import nl.qiy.demo.idp.dw.health.DefaultHealth;
-import nl.qiy.demo.idp.dw.health.JedisHealth;
-import nl.qiy.demo.idp.dw.health.ServiceLoaderHealth;
 import nl.qiy.oic.op.ContextListener;
 import nl.qiy.oic.op.api.AuthenticationResource;
 import nl.qiy.oic.op.api.CORSFilter;
 import nl.qiy.oic.op.api.DiscoveryResource;
 import nl.qiy.oic.op.api.InputResetFilter;
 import nl.qiy.oic.op.api.OAuthExceptionMapper;
+import nl.qiy.oic.op.dw.api.TestInvokerResource;
+import nl.qiy.oic.op.dw.cli.ApiInfoCommand;
+import nl.qiy.oic.op.dw.health.DefaultHealth;
+import nl.qiy.oic.op.dw.health.JedisHealth;
+import nl.qiy.oic.op.dw.health.ServiceLoaderHealth;
+import nl.qiy.oic.op.qiy.MessageDAO;
 import nl.qiy.oic.op.qiy.QiyAuthorizationFlow;
 import nl.qiy.oic.op.qiy.QiyNodeClient;
 import nl.qiy.oic.op.qiy.ServerSentEventStreams;
 import nl.qiy.oic.op.qiy.messagebodywriter.TemplateConnectTokenBodyWriter;
-import nl.qiy.openid.op.spi.impl.demo.MessageDAO;
-import nl.qiy.openid.op.spi.impl.demo.OpSdkSpiImplConfiguration;
+import nl.qiy.openid.op.spi.impl.config.OpSdkSpiImplConfiguration;
 
 /**
  * Base Dropwizard application
@@ -60,10 +60,10 @@ import nl.qiy.openid.op.spi.impl.demo.OpSdkSpiImplConfiguration;
  * @author Friso Vrolijken
  * @since 9 mei 2016
  */
-public class DemoIdPApp extends Application<DemoIdPConfiguration> {
+public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
 
     public static void main(final String[] args) throws Exception {
-        new DemoIdPApp().run(args);
+        new QiyOpenIdConnectApp().run(args);
     }
 
     @Override
@@ -72,12 +72,12 @@ public class DemoIdPApp extends Application<DemoIdPConfiguration> {
     }
 
     @Override
-    public void initialize(final Bootstrap<DemoIdPConfiguration> bootstrap) {
+    public void initialize(final Bootstrap<QiyOICConfiguration> bootstrap) {
         bootstrap.addCommand(new ApiInfoCommand(this));
     }
 
     @Override
-    public void run(final DemoIdPConfiguration configuration, final Environment environment) {
+    public void run(final QiyOICConfiguration configuration, final Environment environment) {
         OpSdkSpiImplConfiguration.setInstance(configuration);
         // @formatter:off
         Client client = new JerseyClientBuilder(environment)

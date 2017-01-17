@@ -1,1 +1,1 @@
-nl.qiy.openid.op.spi.impl.demo.ClientStoreImpl
+nl.qiy.openid.op.spi.impl.mem.ClientStoreImpl
