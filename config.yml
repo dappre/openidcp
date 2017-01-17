@@ -20,8 +20,8 @@ nodeConfig:
   secretsFilename: node-secrets.json
   
 clientConfig: 
-  - id: s6BhdRkqt3
-    uriRegex: https://client.example.org/cb
+  - id: selftest
+    uriRegex: https://dappre-all.local.*
   - id: rudy
     uriRegex: https?://.*
   

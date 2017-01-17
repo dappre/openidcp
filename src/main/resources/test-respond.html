@@ -3,24 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <title>Test Response Evaluation</title>
+<style>
+tr+tr td{ border-top: solid black 1px}
+td+td { padding-left: 4px;}
+td+td pre { margin-top: 3px;}
+td {padding-top: 5px;}
+</style>
 </head>
 <body>
 
-<h1>Response</h1>
+<h1>Processed result</h1>
 
-<h2>Overall result</h2>
 <div id="overall"></div>
+
 <div id="id_token" style="display: none">
-	<table>
-		<tr><td>Algorithm:</td><td id="id_token_0"></td></tr>
+	<h2>ID Token</h2>
+	<table border=0 cellspacing=0 cellpadding=0>
+		<tr><td valign="top">Algorithm:</td><td><pre id="id_token_0"></pre></td></tr>
 		<tr><td valign="top">Claims:</td><td><pre id="id_token_1"></pre></td></tr>
-		<tr><td>Signature (base64):</td><td id="id_token_2"></td></tr>
+		<tr><td valign="top">Signature:</td><td><pre id="id_token_2"></pre></td></tr>
 	</table>
 </div>
-<div id="access_token"></div>
 
+<div id="access_token">
+	<h2>Access token</h2>
+	<pre id="access_token_0"></pre>
+</div>
 
-<h2>Raw result</h2>
+<h1>Raw result</h1>
 <pre id="raw"></pre>
 <script type="text/javascript">
 
@@ -57,18 +67,77 @@ if (map['id_token']) {
 	var tuple = map['id_token'].split('.');
 	if (tuple.length == 3) {
 		document.getElementById("id_token").style.display='';
-		document.getElementById("id_token_0").innerHTML = window.atob(tuple[0]);
+		document.getElementById("id_token_0").innerHTML = JSON.stringify(JSON.parse(window.atob(tuple[0])), null, '\t');
 		document.getElementById("id_token_1").innerHTML = JSON.stringify(JSON.parse(window.atob(tuple[1])), null, '\t');
 		document.getElementById("id_token_2").innerHTML = tuple[2];
 	}
 }
 if (map['access_token']) {
-	document.getElementById("access_token").innerHTML = "Access token (base64):<br> " + map['access_token'];
+	document.getElementById("access_token").style.display = '';
+	document.getElementById("access_token_0").innerHTML = map['access_token'];
 }
 
 document.getElementById("raw").innerHTML = JSON.stringify(map, null, '\t');
 
-</script>
+function doGet(url, onready) {
+    var httpRequest = new XMLHttpRequest();
 
+    if (!httpRequest) {
+      alert('Giving up :( Cannot create an XMLHTTP instance');
+      return false;
+    }
+    httpRequest.onreadystatechange = function() {
+		if (httpRequest.readyState === XMLHttpRequest.DONE) {
+			if (httpRequest.status === 200) {
+				var response = JSON.parse(httpRequest.responseText);
+				onready(response);
+			} else {
+				alert('There was a problem with the request.');
+			}
+		}    	
+    };
+    httpRequest.open('GET', url);
+    httpRequest.setRequestHeader('accept', 'application/json');
+    httpRequest.send();
+}
+
+</script>
+<script type="text/javascript" src="https://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js"></script>
+<script type="text/javascript">
+if (map && map['id_token']) {
+	console.log('verifying signature');
+	var metaDataUri = document.location.href.replace(/test\/redirect.*/, '.well-known\/openid-configuration');
+	doGet(metaDataUri, function(metaData) {
+		doGet(metaData.jwks_uri, function(jwks){
+			try {
+				var sJWS = map['id_token'];
+				var jws = new KJUR.jws.JWS();
+				jws.parseJWS(sJWS);
+				
+				console.log('parsed jws', jws);
+				
+				var alg = jws.parsedJWS.headP.alg;
+				var key = jwks.keys.filter(function(e) {return e.use == 'sig' && e.alg == alg;})[0];
+				if (!key) {
+					alert ('no matching key found in meta data');
+				}
+				var pubKey = KEYUTIL.getKey({kty: key.kty, n: key.n, e: key.e});
+				var result = KJUR.jws.JWS.verify(sJWS, pubKey, ["RS256"]);
+				console.log("result", result);
+				if (result) {
+					document.getElementById("id_token_2").innerHTML = "<span style='background-color: green'>Valid!</span><br>Validated using " + metaDataUri;
+				} else {
+					alert('signature invalid');
+				}
+			} catch (e) {
+				console.log(e);
+				alert ("error caught");
+			}
+		});
+	});
+} else {
+	console.log('no id_token found in response');
+}
+</script>
 </body>
 </html>
