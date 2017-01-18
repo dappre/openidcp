@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package nl.qiy.oic.op.dw;
+package nl.qiy.demo.idp.dw;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -42,6 +42,8 @@ import nl.qiy.oic.op.api.CORSFilter;
 import nl.qiy.oic.op.api.DiscoveryResource;
 import nl.qiy.oic.op.api.InputResetFilter;
 import nl.qiy.oic.op.api.OAuthExceptionMapper;
+import nl.qiy.oic.op.dw.JedisPoolManager;
+import nl.qiy.oic.op.dw.QiyOICConfiguration;
 import nl.qiy.oic.op.dw.api.TestInvokerResource;
 import nl.qiy.oic.op.dw.cli.ApiInfoCommand;
 import nl.qiy.oic.op.dw.health.DefaultHealth;
@@ -60,10 +62,10 @@ import nl.qiy.openid.op.spi.impl.config.OpSdkSpiImplConfiguration;
  * @author Friso Vrolijken
  * @since 9 mei 2016
  */
-public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
+public class DemoIdPApp extends Application<QiyOICConfiguration> {
 
     public static void main(final String[] args) throws Exception {
-        new QiyOpenIdConnectApp().run(args);
+        new DemoIdPApp().run(args);
     }
 
     @Override

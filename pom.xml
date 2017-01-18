@@ -17,7 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<dropwizard.version>1.0.5</dropwizard.version>
-		<mainClass>nl.qiy.oic.op.dw.QiyOpenIdConnectApp</mainClass>
+		<mainClass>nl.qiy.demo.idp.dw.DemoIdPApp</mainClass>
 		<java.source.version>1.8</java.source.version>
 		<java.target.version>1.8</java.target.version>
 		<github.global.server>github</github.global.server>
