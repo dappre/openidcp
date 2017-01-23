@@ -39,12 +39,10 @@ import redis.clients.jedis.JedisPool;
  */
 public final class JedisHealth extends HealthCheck {
     private static final Logger LOGGER = LoggerFactory.getLogger(JedisHealth.class);
+    private static final ReentrantLock checkLock = new ReentrantLock();
 
     private final JedisPool pool;
-    private final ReentrantLock expectedValueLock = new ReentrantLock();
-    private Long expectedValue = Long.valueOf(1);
     private final String key;
-    private boolean firstTime = true;
 
     public JedisHealth(JedisPool pool) {
         super();
@@ -78,18 +76,16 @@ public final class JedisHealth extends HealthCheck {
                 return Result.unhealthy("resource returned from pool is not connected");
             }
             try {
-                expectedValueLock.lock();
-                if (firstTime) {
-                    resource.set(key, "0");
-                    firstTime = false;
-                }
+                checkLock.lock();
+                long startvalue = System.currentTimeMillis();
+
+                resource.set(key, Long.toString(startvalue));
                 Long value = resource.incr(key);
-                if (value.longValue() != expectedValue.longValue()) {
-                    Result.unhealthy("Expected value " + expectedValue + " does not match read value " + value);
+                if (value.longValue() != (startvalue + 1)) {
+                    Result.unhealthy("Expected value " + (startvalue + 1) + " does not match read value " + value);
                 }
-                expectedValue = value + 1;
             } finally {
-                expectedValueLock.unlock();
+                checkLock.unlock();
             }
         }
 

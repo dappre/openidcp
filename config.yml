@@ -22,7 +22,7 @@ nodeConfig:
 clientConfig: 
   - id: selftest
     uriRegex: https://dappre-all.local/oidcp/test/redirect
-  - id: rudy
+  - id: model-webshop
     uriRegex: https?://.*
   
 iss: https://digital-me.nl
