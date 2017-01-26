@@ -46,8 +46,6 @@ public class QiyOICConfiguration extends OpSdkSpiImplConfiguration {
     @NotNull
     private JerseyClientConfiguration jerseyClient = new JerseyClientConfiguration();
 
-    public Integer sessionTimeoutInSeconds;
-
     // @formatter:off
     @JsonCreator //NOSONAR
     public QiyOICConfiguration(@JsonProperty("qrConfig") QRConfig qrConfig, // NOSONAR
@@ -62,9 +60,8 @@ public class QiyOICConfiguration extends OpSdkSpiImplConfiguration {
             @JsonProperty("welcomeMessage") String welcomeMessage,
             @JsonProperty("jedisConfiguration") JedisConfiguration jedisConfiguration,
             @JsonProperty("jerseyClient") JerseyClientConfiguration jerseyClient) { // @formatter:on 
-        super(qrConfig, clientConfig, nodeConfig, cryptoConfig, baseUri, registerCallbackUri, iss, jwkConfigs,
-                cardMsgUri, cardLoginOption, welcomeMessage, jedisConfiguration);
-        this.sessionTimeoutInSeconds = sessionTimeoutInSeconds;
+        super(qrConfig, sessionTimeoutInSeconds, clientConfig, nodeConfig, cryptoConfig, baseUri, registerCallbackUri,
+                iss, jwkConfigs, cardMsgUri, cardLoginOption, welcomeMessage, jedisConfiguration);
         if (jerseyClient != null) {
             this.jerseyClient = jerseyClient;
         }

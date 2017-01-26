@@ -90,11 +90,16 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
         JedisPoolManager jedisPoolManager = new JedisPoolManager(configuration.jedisConfiguration);
         environment.lifecycle().manage(jedisPoolManager);
         MessageDAO.setPool(jedisPoolManager.jedisPool);
-        SessionHandler sessionHandler = new SessionHandler(new JedisSessionManager(jedisPoolManager.jedisPool));
-
-        // SessionHandler sessionHandler = new SessionHandler();
+        SessionHandler sessionHandler;
         if (configuration.sessionTimeoutInSeconds != null) {
+            if (configuration.sessionTimeoutInSeconds == 1) {
+                sessionHandler = new SessionHandler();
+            } else {
+                sessionHandler = new SessionHandler(new JedisSessionManager(jedisPoolManager.jedisPool));
+            }
             sessionHandler.getSessionManager().setMaxInactiveInterval(configuration.sessionTimeoutInSeconds.intValue());
+        } else {
+            sessionHandler = new SessionHandler(new JedisSessionManager(jedisPoolManager.jedisPool));
         }
 
         ContextListener contextListener = new ContextListener();
@@ -103,7 +108,7 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
         Dynamic dynamic = environment.servlets().addFilter("AuthInputReset", new InputResetFilter());
         dynamic.addMappingForUrlPatterns(null, true, "/*");
         dynamic = environment.servlets().addFilter("CORS", new CORSFilter());
-        dynamic.setInitParameter("allowAll", "true");
+        dynamic.setInitParameter("allowAll", "false");
         dynamic.addMappingForUrlPatterns(null, true, "/*");
 
         TemplateConnectTokenBodyWriter.registerTemplate(getHtmlQCTTemplate(), MediaType.TEXT_HTML_TYPE);
