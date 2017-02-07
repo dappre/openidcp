@@ -55,18 +55,54 @@ module.exports = function (grunt) {
             prod: {
                 options: {
                     ignore: [
-                            'html.no-desktop .qr-code',
-                            'html.no-desktop .login-button' ,
 
-                            'html.no-desktop.ios .toggle-button.button',
-                            'html.no-desktop.ios .toggle-button.qrcode',
+                        'html.no-desktop.ios .qr-code',
+                        'html.no-desktop.android .qr-code',
 
-                            'html.no-desktop.android .toggle-button.button' ,
-                            'html.no-desktop.android .toggle-button.qrcode' ,
+                        'html.no-desktop.ios .login-button',
+                        'html.no-desktop.android .login-button',
 
-                            'html.ios .toggle-button.button',
-                            'html.android .toggle-button.button'
-                            ]
+                        'html.ios .login-button',
+                        'html.android .login-button',
+
+                        'html.ios .qr-code',
+                        'html.android .qr-code',
+
+                        'html.ios .toggle-button.button',
+                        'html.android .toggle-button.button',
+
+                        'html.ios .toggle-button.qrcode',
+                        'html.android .toggle-button.qrcode',
+
+                        'html.no-desktop.ios .toggle-button.button',
+                        'html.no-desktop.android .toggle-button.button',
+
+                        'html.no-desktop.ios .toggle-button.qrcode',
+                        'html.no-desktop.android .toggle-button.qrcode'
+
+                        // 'html.no-desktop .qr-code',
+                        // 'html.no-desktop .login-button' ,
+                        //
+                        // 'html.no-desktop.ios .qr-code',
+                        // 'html.no-desktop.ios .login-button' ,
+                        //
+                        // 'html.no-desktop.android .qr-code',
+                        // 'html.no-desktop.android .login-button' ,
+                        //
+                        // 'html.no-desktop.ios .toggle-button.button',
+                        // 'html.no-desktop.ios .toggle-button.qrcode',
+                        //
+                        // 'html.no-desktop.android .toggle-button.button' ,
+                        // 'html.no-desktop.android .toggle-button.qrcode' ,
+                        //
+                        // 'html.ios .toggle-button.button',
+                        // 'html.android .toggle-button.button',
+                        //
+                        // 'html.ios .qr-code',
+                        // 'html.ios .login-button',
+                        // 'html.android .qr-code',
+                        // 'html.android .login-button'
+                        ]
                 },
                 files: {
                     '<%= paths.build %>/styles.css': ['<%= paths.build %>/index.html']

@@ -5,9 +5,9 @@
 @primary-color-dappre: #00abc1;
 
 // media queries (We are mobile first! So no -xs- media query)
-@screen-sm-min:  ~"only screen and (min-width: 768px)";
-@screen-md-min:  ~"only screen and (min-width: 992px)";
-@screen-lg-min:  ~"only screen and (min-width: 1200px)";
+//@screen-sm-min:  ~"only screen and (min-width: 768px)";
+//@screen-md-min:  ~"only screen and (min-width: 992px)";
+//@screen-lg-min:  ~"only screen and (min-width: 1200px)";
 
 
 
@@ -26,24 +26,40 @@ body {
 }
 
 
+.show() { display: block; }
+.hide() { display: none; }
+
+
 //visibility
-.login-button {
-	display: none;
-}
+.qr-code 				{ .show() }
+.login-button			{ .hide() }
+.toggle-button.button	{ .hide() }
+.toggle-button.qrcode	{ .hide() }
+
 html {
 	&.no-desktop {
-		.qr-code 					{ display: none; }
-		.login-button 				{ display: block; }
-
 		&.ios,
 		&.android {
-			.toggle-button.button 	{ display: none; }
-			.toggle-button.qrcode 	{ display: block; }
+			.qr-code 				{ .hide() }
+			.login-button 			{ .show() }
+
+			@media only screen and (min-width: 768px) {
+				.login-button			{ .hide() }
+				.qr-code				{ .show() }
+				.toggle-button.button	{ .show() }
+				.toggle-button.qrcode	{ .hide() }
+			}
 		}
 	}
+
 	&.ios,
 	&.android {
-		.toggle-button.button 		{ display: block; }
+		@media only screen and (min-width: 768px) {
+			.login-button			{ .show() }
+			.qr-code				{ .hide() }
+			.toggle-button.button	{ .hide() }
+			.toggle-button.qrcode	{ .show() }
+		}
 	}
 }
 
@@ -218,7 +234,6 @@ html {
 
 .toggle-button {
 	margin: 20px 0 0 0;
-	display: none;
 }
 
 
