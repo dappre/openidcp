@@ -30,7 +30,7 @@ baseUri: https://dappre-all.local/oidcp/
 registerCallbackUri: https://dappre-all.local/user/connections/user/68aaeb98-dc38-4ab2-9a19-d0f3b66a3f0f/state?durationValid=PT45M&times=1
 dappreBaseURI: https://dappre-all.local/card/
 
-sessionTimeoutInSeconds: 2700
+sessionTimeoutInSeconds: 1
 
 jedisConfiguration:
 # configure the number of connections to redis in a connection pool  
