@@ -27,9 +27,9 @@ node {
     stage ("Build RPM") {
         node { rpmBuildWebapp(config); }
     }
-    stage ("Deliver to dev2") {
+    stage ("Deliver to dev1") {
         // TODO [FV 20161107]: Guess depending on the developer this should be dev1, dev2 ... devn
-        node { rpmDeliveryWebapp(config, 'dev2'); }
+        node { rpmDeliveryWebapp(config, 'dev1'); }
     }
 }
 
