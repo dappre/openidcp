@@ -36,7 +36,6 @@ import nl.qiy.openid.op.spi.impl.config.CryptoConfig;
 import nl.qiy.openid.op.spi.impl.config.JWKConfig;
 import nl.qiy.openid.op.spi.impl.config.OAuthClientConfig;
 import nl.qiy.openid.op.spi.impl.config.OpSdkSpiImplConfiguration;
-import nl.qiy.openid.op.spi.impl.jedis.JedisConfiguration;
 
 public class QiyOICConfiguration extends OpSdkSpiImplConfiguration {
 
@@ -58,10 +57,9 @@ public class QiyOICConfiguration extends OpSdkSpiImplConfiguration {
             @JsonProperty("cardMsgUri") String cardMsgUri,
             @JsonProperty("requireCard") String cardLoginOption, 
             @JsonProperty("welcomeMessage") String welcomeMessage,
-            @JsonProperty("jedisConfiguration") JedisConfiguration jedisConfiguration,
             @JsonProperty("jerseyClient") JerseyClientConfiguration jerseyClient) { // @formatter:on 
         super(qrConfig, sessionTimeoutInSeconds, clientConfig, nodeConfig, cryptoConfig, baseUri, registerCallbackUri,
-                iss, jwkConfigs, cardMsgUri, cardLoginOption, welcomeMessage, jedisConfiguration);
+                iss, jwkConfigs, cardMsgUri, cardLoginOption, welcomeMessage);
         if (jerseyClient != null) {
             this.jerseyClient = jerseyClient;
         }

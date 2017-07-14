@@ -28,8 +28,9 @@ import javax.servlet.FilterRegistration.Dynamic;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.MediaType;
 
-import org.eclipse.jetty.nosql.jedis.JedisSessionManager;
 import org.eclipse.jetty.server.session.SessionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 
@@ -46,9 +47,7 @@ import nl.qiy.oic.op.api.OAuthExceptionMapper;
 import nl.qiy.oic.op.dw.api.TestInvokerResource;
 import nl.qiy.oic.op.dw.cli.ApiInfoCommand;
 import nl.qiy.oic.op.dw.health.DefaultHealth;
-import nl.qiy.oic.op.dw.health.JedisHealth;
 import nl.qiy.oic.op.dw.health.ServiceLoaderHealth;
-import nl.qiy.oic.op.qiy.MessageDAO;
 import nl.qiy.oic.op.qiy.QiyAuthorizationFlow;
 import nl.qiy.oic.op.qiy.QiyNodeClient;
 import nl.qiy.oic.op.qiy.ServerSentEventStreams;
@@ -62,7 +61,7 @@ import nl.qiy.openid.op.spi.impl.config.OpSdkSpiImplConfiguration;
  * @since 9 mei 2016
  */
 public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(QiyOpenIdConnectApp.class);
     public static void main(final String[] args) throws Exception {
         new QiyOpenIdConnectApp().run(args);
     }
@@ -78,6 +77,13 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
     }
 
     @Override
+    protected void onFatalError() {
+        LOGGER.error("Fatal error caught, exiting!");
+        new Exception().printStackTrace(System.err);
+        super.onFatalError();
+    }
+
+    @Override
     public void run(final QiyOICConfiguration configuration, final Environment environment) {
         OpSdkSpiImplConfiguration.setInstance(configuration);
         // @formatter:off
@@ -87,19 +93,9 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
         QiyNodeClient.setJaxRsClient(client);
 
         environment.lifecycle().manage(ServerSentEventStreams.getInstance());
-        JedisPoolManager jedisPoolManager = new JedisPoolManager(configuration.jedisConfiguration);
-        environment.lifecycle().manage(jedisPoolManager);
-        MessageDAO.setPool(jedisPoolManager.jedisPool);
-        SessionHandler sessionHandler;
+        SessionHandler sessionHandler = new SessionHandler();
         if (configuration.sessionTimeoutInSeconds != null) {
-            if (configuration.sessionTimeoutInSeconds == 1) {
-                sessionHandler = new SessionHandler();
-            } else {
-                sessionHandler = new SessionHandler(new JedisSessionManager(jedisPoolManager.jedisPool));
-            }
-            sessionHandler.getSessionManager().setMaxInactiveInterval(configuration.sessionTimeoutInSeconds.intValue());
-        } else {
-            sessionHandler = new SessionHandler(new JedisSessionManager(jedisPoolManager.jedisPool));
+            sessionHandler.setMaxInactiveInterval(configuration.sessionTimeoutInSeconds.intValue());
         }
 
         ContextListener contextListener = new ContextListener();
@@ -125,7 +121,6 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
         environment.getObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         environment.healthChecks().register("default-status", new DefaultHealth());
-        environment.healthChecks().register("Redis", new JedisHealth(jedisPoolManager.jedisPool));
     }
 
     private String getHtmlQCTTemplate() {

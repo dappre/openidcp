@@ -16,11 +16,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<dropwizard.version>1.0.5</dropwizard.version>
+		<dropwizard.version>1.1.0</dropwizard.version>
 		<mainClass>nl.qiy.oic.op.dw.QiyOpenIdConnectApp</mainClass>
 		<java.source.version>1.8</java.source.version>
 		<java.target.version>1.8</java.target.version>
 		<github.global.server>github</github.global.server>
+		<jetty.version>9.4.2.v20170220</jetty.version> <!-- which is defined in the dropwizard bom -->
 	</properties>
 
 	<dependencyManagement>
@@ -52,7 +53,7 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-nosql</artifactId>
-			<version>9.3.9.v20160517</version>
+			<version>${jetty.version}</version> 
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
