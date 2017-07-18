@@ -16,4 +16,7 @@
          .=====II?                          =I++=+++++++++++Z??II        
                                    
        OpenId Connect                             Qiy
-                           Demo app                                      
+                           
+                                                                 
+An OpenIdConnect provider that connects with a Qiy Node to provide an identity
+

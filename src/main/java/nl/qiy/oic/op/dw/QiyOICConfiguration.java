@@ -57,9 +57,10 @@ public class QiyOICConfiguration extends OpSdkSpiImplConfiguration {
             @JsonProperty("cardMsgUri") String cardMsgUri,
             @JsonProperty("requireCard") String cardLoginOption, 
             @JsonProperty("welcomeMessage") String welcomeMessage,
+            @JsonProperty("jedisConfiguration") Object jedisConfiguration,
             @JsonProperty("jerseyClient") JerseyClientConfiguration jerseyClient) { // @formatter:on 
         super(qrConfig, sessionTimeoutInSeconds, clientConfig, nodeConfig, cryptoConfig, baseUri, registerCallbackUri,
-                iss, jwkConfigs, cardMsgUri, cardLoginOption, welcomeMessage);
+                iss, jwkConfigs, cardMsgUri, cardLoginOption, welcomeMessage, null);
         if (jerseyClient != null) {
             this.jerseyClient = jerseyClient;
         }

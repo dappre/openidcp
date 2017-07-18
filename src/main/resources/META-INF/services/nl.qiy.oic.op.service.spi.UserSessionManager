@@ -1,1 +1,1 @@
-nl.qiy.openid.op.spi.impl.jedis.UserSessionManagerImpl
+nl.qiy.openid.op.spi.impl.mem.UserSessionManagerImpl
