@@ -21,7 +21,10 @@ package nl.qiy.oic.op.dw;
 
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterRegistration.Dynamic;
@@ -72,7 +75,7 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
     }
 
     @Override
-    public void initialize(final Bootstrap<QiyOICConfiguration> bootstrap) {
+    public void initialize(Bootstrap<QiyOICConfiguration> bootstrap) {
         bootstrap.addCommand(new ApiInfoCommand(this));
     }
 
@@ -84,7 +87,7 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
     }
 
     @Override
-    public void run(final QiyOICConfiguration configuration, final Environment environment) {
+    public void run(QiyOICConfiguration configuration, Environment environment) {
         OpSdkSpiImplConfiguration.setInstance(configuration);
         // @formatter:off
         Client client = new JerseyClientBuilder(environment)
@@ -107,7 +110,7 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
         dynamic.setInitParameter("allowAll", "false");
         dynamic.addMappingForUrlPatterns(null, true, "/*");
 
-        TemplateConnectTokenBodyWriter.registerTemplate(getHtmlQCTTemplate(), MediaType.TEXT_HTML_TYPE);
+        TemplateConnectTokenBodyWriter.registerTemplate(getHtmlQCTTemplate(configuration), MediaType.TEXT_HTML_TYPE);
         environment.jersey().register(TemplateConnectTokenBodyWriter.class);
 
         environment.jersey().register(new AuthenticationResource());
@@ -123,12 +126,23 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
         environment.healthChecks().register("default-status", new DefaultHealth());
     }
 
-    private String getHtmlQCTTemplate() {
-        // @formatter:off
-        return new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/index.html")))
-                .lines()
-                .collect(Collectors.joining(" "))
-                .replaceAll("\\s+", " "); // @formatter:on
+    private String getHtmlQCTTemplate(QiyOICConfiguration configuration) {
+        
+        URL url = configuration.htmlQiyConnectTokenTemplate;
+        if (url == null) {
+            url = this.getClass().getResource("/index.html");
+        }
+
+        try (InputStream is = url.openStream()) {
+            // @formatter:off
+            return new BufferedReader(new InputStreamReader(is))
+                    .lines()
+                    .collect(Collectors.joining(" "))
+                    .replaceAll("\\s+", " "); // @formatter:on
+        } catch (IOException e) {
+            LOGGER.warn("Error while doing getHtmlQCTTemplate", e);
+            throw new RuntimeException(e);
+        }
     }
 
 }

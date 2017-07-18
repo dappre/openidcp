@@ -29,6 +29,19 @@ baseUri: https://dappre-all.local/oidcp/
 registerCallbackUri: https://dappre-all.local/user/connections/user/f9e043b7-afac-4271-8b7a-b3840509fea9/state?durationValid=PT45M&times=1
 dappreBaseURI: https://dappre-all.local/card/
 
+# Please note: the resources that are to be used as a template cannot have relative links to css and/or images. They must
+# either be inline or absolutely linked. 
+# 
+# Expected template variables: 
+# $dappreappuri$ : This will be a link the the URL that will open the app, when it is clicked on a phone with Dappre installed 
+# $connectqrcode$ : This will be the base64 encoded PNG of the QR code
+# $connectjson$ : The JSON representation of the ConnectToken
+#
+# This will default to the jar-version 
+#
+#htmlQiyConnectTokenTemplate: http://echo.opera.com
+#htmlQiyConnectTokenTemplate: file:/H:/Workspaces/Dappre-Idp/openidcp/src/main/generate-login-page/src/index.html
+
 sessionTimeoutInSeconds: 1
 
 jwkConfigs:
