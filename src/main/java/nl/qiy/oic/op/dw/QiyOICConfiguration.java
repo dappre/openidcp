@@ -19,6 +19,7 @@
 
 package nl.qiy.oic.op.dw;
 
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
 
@@ -51,16 +52,21 @@ public class QiyOICConfiguration extends OpSdkSpiImplConfiguration {
             @JsonProperty("sessionTimeoutInSeconds") Integer sessionTimeoutInSeconds,
             @JsonProperty("clientConfig") List<OAuthClientConfig> clientConfig,
             @JsonProperty("nodeConfig") QiyNodeConfig nodeConfig,
-            @JsonProperty("cryptoConfig") CryptoConfig cryptoConfig, @JsonProperty("baseUri") String baseUri,
-            @JsonProperty("registerCallbackUri") String registerCallbackUri, @JsonProperty("iss") String iss,
+            @JsonProperty("cryptoConfig") CryptoConfig cryptoConfig, 
+            @JsonProperty("baseUri") String baseUri,
+            @JsonProperty("registerCallbackUri") String registerCallbackUri, 
+            @JsonProperty("dappreBaseURI") String dappreBaseURI, 
+            @JsonProperty("iss") String iss,
             @JsonProperty("jwkConfigs") Map<String, Map<String, JWKConfig>> jwkConfigs,
+            @JsonProperty("htmlQiyConnectTokenTemplate") String htmlQiyConnectTokenTemplate,
             @JsonProperty("cardMsgUri") String cardMsgUri,
             @JsonProperty("requireCard") String cardLoginOption, 
             @JsonProperty("welcomeMessage") String welcomeMessage,
             @JsonProperty("jedisConfiguration") Object jedisConfiguration,
-            @JsonProperty("jerseyClient") JerseyClientConfiguration jerseyClient) { // @formatter:on 
-        super(qrConfig, sessionTimeoutInSeconds, clientConfig, nodeConfig, cryptoConfig, baseUri, registerCallbackUri,
-                iss, jwkConfigs, cardMsgUri, cardLoginOption, welcomeMessage, null);
+            @JsonProperty("jerseyClient") JerseyClientConfiguration jerseyClient) throws MalformedURLException { // @formatter:on 
+        super(qrConfig, sessionTimeoutInSeconds, clientConfig, nodeConfig, cryptoConfig, baseUri, dappreBaseURI,
+                registerCallbackUri, iss, jwkConfigs, htmlQiyConnectTokenTemplate, cardMsgUri, cardLoginOption,
+                welcomeMessage, jedisConfiguration);
         if (jerseyClient != null) {
             this.jerseyClient = jerseyClient;
         }
