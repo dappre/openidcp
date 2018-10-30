@@ -39,6 +39,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 
 import io.dropwizard.Application;
 import io.dropwizard.client.JerseyClientBuilder;
+import io.dropwizard.jersey.jackson.JsonProcessingExceptionMapper;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import nl.qiy.oic.op.ContextListener;
@@ -116,6 +117,7 @@ public class QiyOpenIdConnectApp extends Application<QiyOICConfiguration> {
         environment.jersey().register(new AuthenticationResource());
         environment.jersey().register(QiyAuthorizationFlow.getInstance(configuration.dappreBaseURI));
         environment.jersey().register(new DiscoveryResource());
+        environment.jersey().register(new JsonProcessingExceptionMapper(true));
         environment.jersey().register(new OAuthExceptionMapper());
         environment.jersey().register(new TestInvokerResource());
 
